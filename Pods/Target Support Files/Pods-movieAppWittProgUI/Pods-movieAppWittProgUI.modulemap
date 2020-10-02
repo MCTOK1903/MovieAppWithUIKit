@@ -1,0 +1,6 @@
+framework module Pods_movieAppWittProgUI {
+  umbrella header "Pods-movieAppWittProgUI-umbrella.h"
+
+  export *
+  module * { export * }
+}
