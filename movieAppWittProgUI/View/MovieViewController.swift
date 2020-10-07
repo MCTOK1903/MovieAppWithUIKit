@@ -7,13 +7,21 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MovieViewController: UIViewController {
     
-    //MARK: - View
+    // MARK: Properties
+    
+    private var nowPlayingMovieViewModel: MovieVCViewModelType?
+    private var topRatedMovieViewModel: MovieVCViewModelType?
+    private var popularMovieViewModel: MovieVCViewModelType?
+    private var movieCellViewModel: MovieCellViewModelType?
+    
+    // MARK: View
     
     private let scrollView: UIScrollView = {
-       let scroll = UIScrollView()
+        let scroll = UIScrollView()
         scroll.translatesAutoresizingMaskIntoConstraints = false
         return scroll
     }()
@@ -29,7 +37,7 @@ class MovieViewController: UIViewController {
     }()
     
     private let nowPlayingCollectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +58,7 @@ class MovieViewController: UIViewController {
     }()
     
     private let topRatedCollectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +79,7 @@ class MovieViewController: UIViewController {
     }()
     
     private let popularCollectionView: UICollectionView = {
-       let layout = UICollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
@@ -81,12 +89,17 @@ class MovieViewController: UIViewController {
         return cv
     }()
     
-
-    //MARK: - LifeCycle
+    
+    // MARK: LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .black
+        
+        nowPlayingMovieViewModel = NowPlayingMovieViewModel()
+        topRatedMovieViewModel = TopRatedMovieViewModel()
+        popularMovieViewModel = PopularMovieViewModel()
         
         self.nowPlayingCollectionView.dataSource = self
         self.nowPlayingCollectionView.delegate = self
@@ -106,8 +119,22 @@ class MovieViewController: UIViewController {
         scrollView.addSubview(popularLabel)
         scrollView.addSubview(popularCollectionView)
         
+        fetchData()
         setUpNavigarionBar()
         setUpUI()
+        
+        self.nowPlayingMovieViewModel?.resultsDidChange = { _ in
+            self.nowPlayingCollectionView.reloadData()
+        }
+        
+        self.topRatedMovieViewModel?.resultsDidChange = { _  in
+            self.topRatedCollectionView.reloadData()
+        }
+        
+        self.popularMovieViewModel?.resultsDidChange = { _ in
+            self.popularCollectionView.reloadData()
+        }
+        
     }
     
     override func viewDidLayoutSubviews(){
@@ -115,9 +142,38 @@ class MovieViewController: UIViewController {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: scrollView.frame.width, height:  UIScreen.main.bounds.height)
     }
-
-    //MARK: - Funcs
     
+    // MARK: Funcs
+    
+    func fetchData(){
+        
+        nowPlayingMovieViewModel?.fetchMovie(completion: { (response) in
+            switch response {
+            case .success(_):
+                break
+            case .failure(_):
+                break
+            }
+        })
+        
+        topRatedMovieViewModel?.fetchMovie(completion: { (response) in
+            switch response {
+            case .success(_):
+                break
+            case .failure(_):
+                break
+            }
+        })
+        
+        popularMovieViewModel?.fetchMovie(completion: { (response) in
+            switch response {
+            case .success(_):
+                break
+            case .failure(_):
+                break
+            }
+        })
+    }
     
     func setUpNavigarionBar(){
         navigationItem.title = "Movie"
@@ -148,8 +204,8 @@ class MovieViewController: UIViewController {
         topRatedLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         topRatedCollectionView.topAnchor.constraint(equalTo: topRatedLabel.bottomAnchor, constant: 10).isActive = true
-         topRatedCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-         topRatedCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
+        topRatedCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
+        topRatedCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
         topRatedCollectionView.heightAnchor.constraint(equalToConstant: view.frame.height / 4).isActive = true
         
         popularLabel.topAnchor.constraint(equalTo: topRatedCollectionView.bottomAnchor, constant: 15).isActive = true
@@ -161,14 +217,15 @@ class MovieViewController: UIViewController {
         popularCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -10).isActive = true
         popularCollectionView.heightAnchor.constraint(equalToConstant: view.frame.height / 4).isActive = true
     }
-
 }
 
+
+// MARK: - UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
 
 extension MovieViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return nowPlayingMovieViewModel!.numberOfItemsInSection(section: section)
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -176,15 +233,23 @@ extension MovieViewController: UICollectionViewDataSource, UICollectionViewDeleg
         switch collectionView.tag {
         case 0:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "nowPlayingCell", for: indexPath) as! NowPlayingCollectionViewCell
-            cell.backgroundColor = .red
+            
+            movieCellViewModel = nowPlayingMovieViewModel?.cellForItemAt(indexPath: indexPath)
+            cell.movieName.text = movieCellViewModel?.title
+            cell.movieImage.sd_setImage(with: movieCellViewModel?.imageUrl)
             return cell
         case 1:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "topRatedCell", for: indexPath) as! TopRatedCollectionViewCell
-            cell.backgroundColor = .brown
+            
+            movieCellViewModel = topRatedMovieViewModel?.cellForItemAt(indexPath: indexPath)
+            cell.movieName.text = movieCellViewModel?.title
+            cell.movieImage.sd_setImage(with: movieCellViewModel?.imageUrl)
             return cell
         case 2:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "popularCell", for: indexPath) as! PopularCollectionViewCell
-            cell.backgroundColor = .gray
+            movieCellViewModel = popularMovieViewModel?.cellForItemAt(indexPath: indexPath)
+            cell.movieName.text = movieCellViewModel?.title
+            cell.movieImage.sd_setImage(with: movieCellViewModel?.imageUrl)
             return cell
         default:
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
@@ -205,7 +270,4 @@ extension MovieViewController: UICollectionViewDataSource, UICollectionViewDeleg
             return
         }
     }
-    
-    
-    
 }

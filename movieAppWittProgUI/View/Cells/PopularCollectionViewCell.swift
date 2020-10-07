@@ -1,5 +1,5 @@
 //
-//  NowPlayingCollectionViewCell.swift
+//  PopularCollectionViewCell.swift
 //  movieAppWittProgUI
 //
 //  Created by MCT on 1.10.2020.
@@ -8,14 +8,14 @@
 
 import UIKit
 
-class NowPlayingCollectionViewCell: UICollectionViewCell {
+class PopularCollectionViewCell: UICollectionViewCell {
     
     //MARK: - properties
     
     //MARK: - view
-
-    private var movieImage: UIImageView = {
-       let iv = UIImageView()
+    
+    var movieImage: UIImageView = {
+        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
@@ -23,7 +23,7 @@ class NowPlayingCollectionViewCell: UICollectionViewCell {
         return iv
     }()
     
-    private let movieName: UILabel = {
+    var movieName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.clipsToBounds = true
@@ -65,8 +65,7 @@ class NowPlayingCollectionViewCell: UICollectionViewCell {
         movieName.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         movieName.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
         
-
+        
         
     }
-    
 }

@@ -1,5 +1,5 @@
 //
-//  TopRatedCollectionViewCell.swift
+//  NowPlayingCollectionViewCell.swift
 //  movieAppWittProgUI
 //
 //  Created by MCT on 1.10.2020.
@@ -8,13 +8,13 @@
 
 import UIKit
 
-class TopRatedCollectionViewCell: UICollectionViewCell {
+class NowPlayingCollectionViewCell: UICollectionViewCell {
     
     //MARK: - properties
     
     //MARK: - view
 
-    private var movieImage: UIImageView = {
+    var movieImage: UIImageView = {
        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFill
@@ -23,7 +23,7 @@ class TopRatedCollectionViewCell: UICollectionViewCell {
         return iv
     }()
     
-    private let movieName: UILabel = {
+    var movieName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.clipsToBounds = true
@@ -68,4 +68,5 @@ class TopRatedCollectionViewCell: UICollectionViewCell {
 
         
     }
+    
 }
