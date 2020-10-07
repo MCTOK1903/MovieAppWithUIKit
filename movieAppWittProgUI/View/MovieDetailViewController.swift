@@ -11,7 +11,13 @@ import UIKit
 class MovieDetailViewController: UIViewController {
     
     //MARK: - Properties
+    private var movieDetailViewModel: MovieDetailViewModelType?
     
+    var targetId: Int {
+        didSet {
+            movieNameLabel.text = "\(targetId)"
+        }
+    }
     
     //MARK: - Views
     
@@ -91,6 +97,7 @@ class MovieDetailViewController: UIViewController {
     
     
     //MARK: - LifeCycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -109,6 +116,17 @@ class MovieDetailViewController: UIViewController {
         
         setUpUI()
     }
+    
+    init(detailId:Int) {
+        self.targetId = detailId
+        print(targetId)
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     //MARK: - funcs
     

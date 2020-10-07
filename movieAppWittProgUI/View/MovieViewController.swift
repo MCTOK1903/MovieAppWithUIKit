@@ -120,20 +120,9 @@ class MovieViewController: UIViewController {
         scrollView.addSubview(popularCollectionView)
         
         fetchData()
-        setUpNavigarionBar()
+        setUpNavigationBar()
         setUpUI()
-        
-        self.nowPlayingMovieViewModel?.resultsDidChange = { _ in
-            self.nowPlayingCollectionView.reloadData()
-        }
-        
-        self.topRatedMovieViewModel?.resultsDidChange = { _  in
-            self.topRatedCollectionView.reloadData()
-        }
-        
-        self.popularMovieViewModel?.resultsDidChange = { _ in
-            self.popularCollectionView.reloadData()
-        }
+        reloadCollectionViews()
         
     }
     
@@ -144,6 +133,7 @@ class MovieViewController: UIViewController {
     }
     
     // MARK: Funcs
+    
     
     func fetchData(){
         
@@ -175,7 +165,23 @@ class MovieViewController: UIViewController {
         })
     }
     
-    func setUpNavigarionBar(){
+    func reloadCollectionViews(){
+        
+        self.nowPlayingMovieViewModel?.resultsDidChange = { _ in
+            self.nowPlayingCollectionView.reloadData()
+        }
+        
+        self.topRatedMovieViewModel?.resultsDidChange = { _  in
+            self.topRatedCollectionView.reloadData()
+        }
+        
+        self.popularMovieViewModel?.resultsDidChange = { _ in
+            self.popularCollectionView.reloadData()
+        }
+    }
+    
+    func setUpNavigationBar(){
+        
         navigationItem.title = "Movie"
         navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0)]
@@ -265,9 +271,18 @@ extension MovieViewController: UICollectionViewDataSource, UICollectionViewDeleg
         
         switch collectionView.tag {
         case 0:
-            navigationController?.pushViewController(MovieDetailViewController(), animated: true)
+            let id = nowPlayingMovieViewModel?.getSelectedId(indexPath: indexPath)
+            print("sa \(id!)")
+            navigationController?.pushViewController(MovieDetailViewController(detailId: id!), animated: true)
+        case 1:
+            let id = topRatedMovieViewModel?.getSelectedId(indexPath: indexPath)
+            navigationController?.pushViewController(MovieDetailViewController(detailId: id!), animated: true)
+        case 2:
+            let id = popularMovieViewModel?.getSelectedId(indexPath: indexPath)
+            navigationController?.pushViewController(MovieDetailViewController(detailId: id!), animated: true)
         default:
             return
         }
     }
+
 }

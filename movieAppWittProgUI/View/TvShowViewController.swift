@@ -15,8 +15,5 @@ class TvShowViewController: UIViewController {
 
         view.backgroundColor = .cyan
     }
-    
-
-
 
 }

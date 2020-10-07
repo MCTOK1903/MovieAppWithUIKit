@@ -46,7 +46,8 @@ class PopularMovieViewModel: MovieVCViewModelType {
         }
     }
     
-
-    
-    
+    func getSelectedId(indexPath: IndexPath) -> Int {
+        let  targetId = results[indexPath.item].id
+        return targetId
+    }
 }

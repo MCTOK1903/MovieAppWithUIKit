@@ -10,14 +10,14 @@ import UIKit
 
 class PopularCollectionViewCell: UICollectionViewCell {
     
-    //MARK: - properties
+    //MARK: Properties
     
-    //MARK: - view
+    //MARK: View
     
     var movieImage: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "joel-filipe-RFDP7_80v5A-unsplash")
         return iv
@@ -38,7 +38,7 @@ class PopularCollectionViewCell: UICollectionViewCell {
     }()
     
     
-    //MARK: - lifeCycle
+    //MARK: lifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -52,7 +52,7 @@ class PopularCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - func
+    //MARK: func
     
     func setUpUI() {
         
@@ -64,8 +64,5 @@ class PopularCollectionViewCell: UICollectionViewCell {
         movieName.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 5).isActive = true
         movieName.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         movieName.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        
-        
-        
     }
 }

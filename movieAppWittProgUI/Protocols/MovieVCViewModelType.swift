@@ -15,4 +15,5 @@ protocol MovieVCViewModelType {
     
     func fetchMovie(completion: @escaping (AFResult<Codable>) ->Void)
     var resultsDidChange: (([Result]) -> Void)? { get set }
+    func getSelectedId(indexPath: IndexPath)-> Int
 }

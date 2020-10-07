@@ -11,14 +11,14 @@ import UIKit
 class MovieCastCollectionViewCell: UICollectionViewCell {
     
     
-    //MARK: - properties
+    // MARK: properties
     
-    //MARK: - view
+    // MARK: view
     
     private var movieImage: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.contentMode = .scaleAspectFill
+        iv.contentMode = .scaleAspectFit
         iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "joel-filipe-RFDP7_80v5A-unsplash")
         return iv
@@ -39,7 +39,7 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
     }()
     
     
-    //MARK: - lifeCycle
+    // MARK: lifeCycle
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -53,7 +53,7 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - func
+    // MARK: func
     
     func setUpUI() {
         
@@ -65,9 +65,6 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
         movieName.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 5).isActive = true
         movieName.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         movieName.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        
-        
-        
     }
     
 }
