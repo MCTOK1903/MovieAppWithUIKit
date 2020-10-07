@@ -20,7 +20,6 @@ class NowPlayingMovieViewModel: MovieVCViewModelType {
     }
     var resultsDidChange: (([Result]) -> Void)?
     
-    
     // MARK: Funcs
     
     func numberOfItemsInSection(section: Int) -> Int {

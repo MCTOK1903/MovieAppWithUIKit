@@ -11,6 +11,12 @@ import Alamofire
 
 protocol MovieDetailViewModelType {
     
+    var movieImage:URL {get}
+    var movieName:String {get}
+    var movieOverView: String {get}
+    
+    var resultssDidChange: ((MovieDetail)-> Void)? { get set }
+    
     func fetchMovieDetail(targetId:Int, completion: @escaping (AFResult<Codable>) ->Void)
     
 }

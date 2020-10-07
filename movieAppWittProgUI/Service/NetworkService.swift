@@ -13,6 +13,7 @@ import SwiftyJSON
 class NetworkService {
     
     // MARK: Properties
+    
     public static let shared: NetworkService = NetworkService()
 }
 

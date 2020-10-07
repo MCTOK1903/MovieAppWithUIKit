@@ -89,7 +89,6 @@ class MovieViewController: UIViewController {
         return cv
     }()
     
-    
     // MARK: LifeCycle
     
     override func viewDidLoad() {
@@ -133,7 +132,6 @@ class MovieViewController: UIViewController {
     }
     
     // MARK: Funcs
-    
     
     func fetchData(){
         

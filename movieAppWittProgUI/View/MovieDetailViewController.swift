@@ -13,11 +13,7 @@ class MovieDetailViewController: UIViewController {
     //MARK: - Properties
     private var movieDetailViewModel: MovieDetailViewModelType?
     
-    var targetId: Int {
-        didSet {
-            movieNameLabel.text = "\(targetId)"
-        }
-    }
+    var targetId: Int
     
     //MARK: - Views
     
@@ -67,7 +63,6 @@ class MovieDetailViewController: UIViewController {
         label.font = UIFont.boldSystemFont(ofSize: 15)
         label.textColor = .white
         label.textAlignment = .center
-        label.text = " Overview Overview Overview Overview Overview Overview Overview"
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -98,10 +93,13 @@ class MovieDetailViewController: UIViewController {
     
     //MARK: - LifeCycle
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = .black
+        
+        movieDetailViewModel = MovieDetailViewModel()
         
         movieCastCollectionView.delegate = self
         movieCastCollectionView.dataSource = self
@@ -115,6 +113,9 @@ class MovieDetailViewController: UIViewController {
         scrollView.addSubview(movieCastCollectionView)
         
         setUpUI()
+        fetchMovieDetail()
+        reloadUI()
+       
     }
     
     init(detailId:Int) {
@@ -122,13 +123,35 @@ class MovieDetailViewController: UIViewController {
         print(targetId)
         super.init(nibName: nil, bundle: nil)
     }
+    
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: funcs
     
-    //MARK: - funcs
+    fileprivate func fetchMovieDetail() {
+        movieDetailViewModel?.fetchMovieDetail(targetId: targetId, completion: { (response) in
+            switch response {
+            case .success(_):
+                break
+            case .failure( let error):
+                print(error)
+                break
+            }
+        })
+    }
+    
+    func reloadUI(){
+        movieDetailViewModel?.resultssDidChange = { [weak self] _ in
+            
+            self?.movieNameLabel.text = self?.movieDetailViewModel?.movieName
+            self?.movieImage.sd_setImage(with: self?.movieDetailViewModel?.movieImage)
+            self?.overviewLabel.text = self?.movieDetailViewModel?.movieOverView
+            
+        }
+    }
     
     func setUpUI(){
         
@@ -168,7 +191,7 @@ class MovieDetailViewController: UIViewController {
     
 }
 
-//MARK: - Extension
+// MARK: - UICollectionViewDataSource
 
 extension MovieDetailViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -185,6 +208,5 @@ extension MovieDetailViewController: UICollectionViewDataSource, UICollectionVie
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
-    
     
 }
