@@ -42,7 +42,7 @@ class MovieViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(NowPlayingCollectionViewCell.self, forCellWithReuseIdentifier: "nowPlayingCell")
-        cv.backgroundColor = .white
+        cv.backgroundColor = .black
         cv.tag = 0
         return cv
     }()
@@ -63,7 +63,7 @@ class MovieViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(TopRatedCollectionViewCell.self, forCellWithReuseIdentifier: "topRatedCell")
-        cv.backgroundColor = .white
+        cv.backgroundColor = .black
         cv.tag = 1
         return cv
     }()
@@ -84,7 +84,7 @@ class MovieViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(PopularCollectionViewCell.self, forCellWithReuseIdentifier: "popularCell")
-        cv.backgroundColor = .white
+        cv.backgroundColor = .black
         cv.tag = 2
         return cv
     }()
@@ -119,7 +119,7 @@ class MovieViewController: UIViewController {
         scrollView.addSubview(popularCollectionView)
         
         fetchData()
-        setUpNavigationBar()
+        
         setUpUI()
         reloadCollectionViews()
         
@@ -181,9 +181,10 @@ class MovieViewController: UIViewController {
     func setUpNavigationBar(){
         
         navigationItem.title = "Movie"
-        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        navigationController?.navigationBar.barTintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0)]
         self.navigationController?.navigationBar.isTranslucent = false
+        
         
     }
     

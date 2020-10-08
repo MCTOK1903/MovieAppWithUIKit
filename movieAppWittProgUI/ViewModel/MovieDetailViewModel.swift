@@ -11,6 +11,8 @@ import Alamofire
 
 class MovieDetailViewModel: MovieDetailViewModelType {
     
+    // MARK: Properties
+    
     var movieImage: URL {
         let url = URL(string: UrlConstant.IMAGE_URL + "\(results!.backdropPath)")!.absoluteURL
         return url
@@ -44,7 +46,6 @@ class MovieDetailViewModel: MovieDetailViewModelType {
             case .success(let movieDetailModel):
                 let movieDetailResult = movieDetailModel as! MovieDetail
                 self?.results = movieDetailResult
-                print("Selam \(movieDetailResult)")
             case .failure(let error):
                 print("error: \(error)")
             }

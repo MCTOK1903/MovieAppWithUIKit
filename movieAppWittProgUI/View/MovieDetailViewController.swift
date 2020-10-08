@@ -10,12 +10,14 @@ import UIKit
 
 class MovieDetailViewController: UIViewController {
     
-    //MARK: - Properties
+    // MARK: Properties
     private var movieDetailViewModel: MovieDetailViewModelType?
+    private var movieCastViewModel: MovieCastViewModelTye?
+    private var movieCastCellViewModel: MovieCastCellViewModelType?
     
     var targetId: Int
     
-    //MARK: - Views
+    // MARK: Views
     
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
@@ -28,7 +30,6 @@ class MovieDetailViewController: UIViewController {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
         image.contentMode = .scaleAspectFit
-        image.image = #imageLiteral(resourceName: "fiveyears")
         return image
     }()
     
@@ -36,11 +37,12 @@ class MovieDetailViewController: UIViewController {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.clipsToBounds = true
-        label.font = UIFont.italicSystemFont(ofSize: 17)
+        label.font = UIFont.italicSystemFont(ofSize: 20)
         label.textColor = .white
         label.textAlignment = .center
         label.text = "Movie Name"
         label.textAlignment = .left
+        label.numberOfLines = 0
         return label
     }()
     
@@ -86,13 +88,11 @@ class MovieDetailViewController: UIViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.register(MovieCastCollectionViewCell.self, forCellWithReuseIdentifier: "movieCastCell")
-        cv.backgroundColor = .magenta
+        cv.backgroundColor = .black
         return cv
     }()
     
-    
-    //MARK: - LifeCycle
-    
+    // MARK: LifeCycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,6 +100,7 @@ class MovieDetailViewController: UIViewController {
         view.backgroundColor = .black
         
         movieDetailViewModel = MovieDetailViewModel()
+        movieCastViewModel = MovieCastViewModel()
         
         movieCastCollectionView.delegate = self
         movieCastCollectionView.dataSource = self
@@ -132,7 +133,19 @@ class MovieDetailViewController: UIViewController {
     // MARK: funcs
     
     fileprivate func fetchMovieDetail() {
+        
         movieDetailViewModel?.fetchMovieDetail(targetId: targetId, completion: { (response) in
+            switch response {
+            case .success(_):
+                print(self.targetId)
+                break
+            case .failure( let error):
+                print(error)
+                break
+            }
+        })
+        
+        movieCastViewModel?.fetchMovieCast(targetId: targetId, completion: { (response) in
             switch response {
             case .success(_):
                 break
@@ -141,6 +154,7 @@ class MovieDetailViewController: UIViewController {
                 break
             }
         })
+        
     }
     
     func reloadUI(){
@@ -150,6 +164,10 @@ class MovieDetailViewController: UIViewController {
             self?.movieImage.sd_setImage(with: self?.movieDetailViewModel?.movieImage)
             self?.overviewLabel.text = self?.movieDetailViewModel?.movieOverView
             
+        }
+        
+        movieCastViewModel?.castsDidChange = { [weak self] _ in
+            self?.movieCastCollectionView.reloadData()
         }
     }
     
@@ -191,22 +209,25 @@ class MovieDetailViewController: UIViewController {
     
 }
 
-// MARK: - UICollectionViewDataSource
+// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 
 extension MovieDetailViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return (movieCastViewModel!.numberOfItemsInSection(section: section))
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieCastCell", for: indexPath) as! MovieCastCollectionViewCell
-        cell.backgroundColor = .red
+        
+        movieCastCellViewModel = movieCastViewModel?.cellForItemAt(indexPath: indexPath)
+        cell.castImage.sd_setImage(with: movieCastCellViewModel?.imageUrl)
+        cell.castName.text = movieCastCellViewModel?.name
+        cell.backgroundColor = .black
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width/2.5, height: collectionView.frame.width/1.5)
     }
-    
 }

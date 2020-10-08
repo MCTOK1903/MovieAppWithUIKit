@@ -28,12 +28,11 @@ class PopularCollectionViewCell: UICollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.clipsToBounds = true
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         label.text = "Film Name"
-        label.backgroundColor = .cyan
+        label.backgroundColor = .black
         label.numberOfLines = 0
-        label.textAlignment = .left
         return label
     }()
     

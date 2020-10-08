@@ -15,7 +15,7 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
     
     // MARK: view
     
-    private var movieImage: UIImageView = {
+    var castImage: UIImageView = {
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFit
@@ -24,17 +24,16 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
         return iv
     }()
     
-    private let movieName: UILabel = {
+    var castName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.clipsToBounds = true
         label.font = UIFont.systemFont(ofSize: 15)
-        label.textColor = .black
+        label.textColor = .white
         label.textAlignment = .center
         label.text = "Cast Name"
-        label.backgroundColor = .cyan
+        label.backgroundColor = .black
         label.numberOfLines = 0
-        label.textAlignment = .left
         return label
     }()
     
@@ -43,8 +42,8 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        contentView.addSubview(movieImage)
-        contentView.addSubview(movieName)
+        contentView.addSubview(castImage)
+        contentView.addSubview(castName)
         
         setUpUI()
     }
@@ -57,14 +56,14 @@ class MovieCastCollectionViewCell: UICollectionViewCell {
     
     func setUpUI() {
         
-        movieImage.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        movieImage.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        movieImage.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        movieImage.heightAnchor.constraint(equalToConstant: contentView.frame.height/1.30).isActive = true
+        castImage.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        castImage.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        castImage.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        castImage.heightAnchor.constraint(equalToConstant: contentView.frame.height/1.30).isActive = true
         
-        movieName.topAnchor.constraint(equalTo: movieImage.bottomAnchor, constant: 5).isActive = true
-        movieName.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        movieName.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        castName.topAnchor.constraint(equalTo: castImage.bottomAnchor, constant: 5).isActive = true
+        castName.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        castName.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
     }
     
 }
